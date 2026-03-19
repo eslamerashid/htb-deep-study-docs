@@ -14,10 +14,17 @@ tools: [screen, gcc, searchsploit]
 
 ## Related Topics
 
-- [[Linux Privilege Escalation]]
-- [[Linux Privilege Escalation Playbook]]
-- [[Technique Registry]]
-- [[Post Exploitation]]
+- [Linux Privilege Escalation](README.md)
+- [Privileged Groups](privileged-groups.md)
+- [Cron Job Abuse](cron-job-abuse.md)
+
+## Quick Navigation
+
+- [Enumeration Checklist](#enumeration-checklist)
+- [Attack Methodology](#attack-methodology)
+- [Attack Chain](#attack-chain)
+- [Practical Example](#practical-example)
+- [Detection Indicators](#detection-indicators)
 
 ## Concept Overview
 
@@ -47,8 +54,8 @@ Do I have local shell access?
 
 ## Knowledge Graph
 
-- [[Technique Registry]]
-- [[Pentesting Knowledge Map]]
+- service-version enumeration
+- SUID abuse and dynamic-loader hijacking
 
 ## Internal Mechanics
 

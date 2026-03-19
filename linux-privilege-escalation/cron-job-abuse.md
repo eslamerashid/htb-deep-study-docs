@@ -14,9 +14,16 @@ tools: [cron, crontab, pspy, find, bash, nc]
 
 ## Related Topics
 
-- [[Linux Privilege Escalation]]
-- [[Privileged Groups]]
-- [[Post Exploitation]]
+- [Linux Privilege Escalation](README.md)
+- [Privileged Groups](privileged-groups.md)
+- [Vulnerable Services](vulnerable-services.md)
+
+## Quick Navigation
+
+- [Enumeration Checklist](#enumeration-checklist)
+- [Attack Methodology](#attack-methodology)
+- [Practical Example](#practical-example)
+- [Defensive Perspective](#defensive-perspective)
 
 ## Concept Overview
 
@@ -48,8 +55,8 @@ Can I write to any script/config called by cron?
 
 ## Knowledge Graph
 
-- [[Technique Registry]]
-- [[Pentesting Knowledge Map]]
+- Linux privilege escalation workflow
+- post-exploitation pivoting
 
 ## Internal Mechanics
 

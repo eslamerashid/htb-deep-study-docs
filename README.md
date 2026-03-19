@@ -1,9 +1,12 @@
-# Deep Study
+# Deep Study Knowledge Base
 
 This branch is auto-published for GitBook and contains only deep-study content.
 
-## Topics
+## Categories
 
-- [00 Cron Job Abuse](deep_study/00 Cron Job Abuse.md)
-- [01 Privileged Groups](deep_study/01 Privileged Groups.md)
-- [02 Vulnerable Services](deep_study/02 Vulnerable Services.md)
+### linux privilege escalation
+
+- [cron-job-abuse](linux-privilege-escalation/cron-job-abuse.md)
+- [privileged-groups](linux-privilege-escalation/privileged-groups.md)
+- [vulnerable-services](linux-privilege-escalation/vulnerable-services.md)
+

@@ -14,11 +14,18 @@ tools: [id, groups, getent, docker, lxc, debugfs]
 
 ## Related Topics
 
-- [[Linux Privilege Escalation]]
-- [[Linux Privilege Escalation Index]]
-- [[Linux Privilege Escalation Playbook]]
-- [[Container Security]]
-- [[Post Exploitation]]
+- [Linux Privilege Escalation](README.md)
+- [Cron Job Abuse](cron-job-abuse.md)
+- [Vulnerable Services](vulnerable-services.md)
+
+## Quick Navigation
+
+- [Enumeration Checklist](#enumeration-checklist)
+- [Attack Methodology](#attack-methodology)
+- [LXC / LXD Privilege Escalation](#lxc--lxd-privilege-escalation)
+- [Docker Group Privilege Escalation](#docker-group-privilege-escalation)
+- [Disk Group Privilege Escalation](#disk-group-privilege-escalation)
+- [Defensive Perspective](#defensive-perspective)
 
 ## Enumeration Checklist
 
