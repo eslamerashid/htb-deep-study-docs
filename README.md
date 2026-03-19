@@ -1,12 +1,15 @@
-# Deep Study Knowledge Base
+# Deep Study
 
-This branch is auto-published for GitBook and contains only deep-study content.
+This section is organized by topic domains so GitHub and GitBook stay
+clean, searchable, and easy to navigate.
 
 ## Categories
 
-### linux privilege escalation
+- [Linux Privilege Escalation](linux-privilege-escalation/README.md)
 
-- [cron-job-abuse](linux-privilege-escalation/cron-job-abuse.md)
-- [privileged-groups](linux-privilege-escalation/privileged-groups.md)
-- [vulnerable-services](linux-privilege-escalation/vulnerable-services.md)
+## Naming Convention
 
+- Category folders use lowercase kebab-case.
+- Topic files use lowercase kebab-case.
+- Each topic starts with YAML frontmatter and a single `Related Topics`
+  section near the top.

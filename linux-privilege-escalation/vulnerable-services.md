@@ -1,12 +1,16 @@
 ---
+id: deep-study-linux-privilege-escalation-vulnerable-services
 tags: [htb, pentesting, linux, privilege-escalation]
 aliases: [Vulnerable Services]
 date: 2026-03-17
 topic: Vulnerable Services
 type: deep-study
 difficulty: intermediate
-status: new
-category: privesc
+owner: vault-agent
+status: draft
+version: 1.1
+last_updated: 2026-03-19
+category: linux-privilege-escalation
 tools: [screen, gcc, searchsploit]
 ---
 
@@ -18,14 +22,6 @@ tools: [screen, gcc, searchsploit]
 - [Privileged Groups](privileged-groups.md)
 - [Cron Job Abuse](cron-job-abuse.md)
 
-## Quick Navigation
-
-- [Enumeration Checklist](#enumeration-checklist)
-- [Attack Methodology](#attack-methodology)
-- [Attack Chain](#attack-chain)
-- [Practical Example](#practical-example)
-- [Detection Indicators](#detection-indicators)
-
 ## Concept Overview
 
 Vulnerable services are locally installed daemons or helper programs that expose a privilege escalation path because of weak permissions, unsafe design, or known software flaws. In Linux privilege escalation, these services matter because they often run as root or ship with SUID bits, which means a normal user can transform a local code execution bug into full system compromise.
@@ -33,6 +29,15 @@ Vulnerable services are locally installed daemons or helper programs that expose
 The key idea is that local enumeration is not only about users, groups, and sudo rights. It is also about identifying software versions and mapping them against known exploits. If the service is privileged and the version is vulnerable, exploitation can be faster and more reliable than attempting kernel attacks.
 
 In this lesson, the example is GNU `screen` version 4.5.0. That release can be abused because of unsafe handling around log file creation, allowing an attacker to influence `/etc/ld.so.preload` and force the dynamic linker to load a malicious shared object as root.
+
+## Quick Navigation
+
+- [Enumeration Checklist](#enumeration-checklist)
+- [Attack Methodology](#attack-methodology)
+- [Attack Chain](#attack-chain)
+- [Practical Example](#practical-example)
+- [Detection Indicators](#detection-indicators)
+- [Defensive Perspective](#defensive-perspective)
 
 ## Decision Tree
 
@@ -109,7 +114,7 @@ Condensed attacker workflow used during real engagements.
 
 See:
 
-[[Privilege Escalation Decision Tree]]
+Linux privilege escalation decision workflow (authoring vault reference).
 
 ## Attack Chain
 
@@ -191,8 +196,8 @@ id
 
 Possible escalation chains from this technique.
 
-- -> [[Linux Privilege Escalation]]
-- -> [[Post Exploitation]]
+- [Linux Privilege Escalation](README.md)
+- [Privileged Groups](privileged-groups.md)
 
 ## Real World Scenario
 
@@ -211,15 +216,7 @@ Common tools associated with this technique.
 - `screen`
 - `gcc`
 - `searchsploit`
-- [[Nmap]]
-
-## Defensive Perspective
-
-- Remove unnecessary SUID bits from non-essential binaries.
-- Patch legacy packages quickly, especially utilities reachable by unprivileged users.
-- Monitor writes to `/etc/ld.so.preload` because that file is highly sensitive.
-- Alert on suspicious compilation activity and execution of temporary binaries from `/tmp`.
-- Limit local compiler availability on hardened systems where practical.
+- `nmap`
 
 ## Detection Indicators
 
@@ -230,6 +227,14 @@ Signs defenders may observe if this attack occurs.
 - Shared objects or shell binaries appearing in `/tmp`.
 - Sudden ownership or permission changes that create SUID shells.
 - Root shell execution from non-standard temporary paths.
+
+## Defensive Perspective
+
+- Remove unnecessary SUID bits from non-essential binaries.
+- Patch legacy packages quickly, especially utilities reachable by unprivileged users.
+- Monitor writes to `/etc/ld.so.preload` because that file is highly sensitive.
+- Alert on suspicious compilation activity and execution of temporary binaries from `/tmp`.
+- Limit local compiler availability on hardened systems where practical.
 
 ## Practice Lab Idea
 

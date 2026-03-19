@@ -1,12 +1,16 @@
 ---
+id: deep-study-linux-privilege-escalation-cron-job-abuse
 tags: [htb, pentesting, linux, privilege-escalation]
 aliases: [Cron Job Abuse]
 date: 2026-03-18
 topic: Cron Job Abuse
 type: deep-study
 difficulty: intermediate
-status: new
-category: privesc
+owner: vault-agent
+status: draft
+version: 1.1
+last_updated: 2026-03-19
+category: linux-privilege-escalation
 tools: [cron, crontab, pspy, find, bash, nc]
 ---
 
@@ -18,13 +22,6 @@ tools: [cron, crontab, pspy, find, bash, nc]
 - [Privileged Groups](privileged-groups.md)
 - [Vulnerable Services](vulnerable-services.md)
 
-## Quick Navigation
-
-- [Enumeration Checklist](#enumeration-checklist)
-- [Attack Methodology](#attack-methodology)
-- [Practical Example](#practical-example)
-- [Defensive Perspective](#defensive-perspective)
-
 ## Concept Overview
 
 Cron is a task scheduler that runs commands on time-based intervals.
@@ -34,6 +31,14 @@ low-privileged users.
 
 The attacker does not need direct access to root crontab if they can
 modify the script that cron calls.
+
+## Quick Navigation
+
+- [Enumeration Checklist](#enumeration-checklist)
+- [Attack Methodology](#attack-methodology)
+- [Practical Example](#practical-example)
+- [Detection Indicators](#detection-indicators)
+- [Defensive Perspective](#defensive-perspective)
 
 ## Decision Tree
 
@@ -100,7 +105,7 @@ Condensed attacker workflow used during real engagements.
 
 See:
 
-[[Privilege Escalation Decision Tree]]
+Linux privilege escalation decision workflow (authoring vault reference).
 
 ## Attack Chain
 
@@ -160,8 +165,8 @@ nc -lnvp <PORT>
 
 Possible escalation chains from this technique.
 
-- -> [[Post Exploitation]]
-- -> [[Linux Privilege Escalation]]
+- [Linux Privilege Escalation](README.md)
+- [Privileged Groups](privileged-groups.md)
 
 ## Real World Scenario
 
@@ -183,13 +188,6 @@ Common tools associated with this technique.
 - bash
 - nc
 
-## Defensive Perspective
-
-- Enforce least privilege and immutable permissions on cron scripts.
-- Keep cron script directories root-owned and non-writable by others.
-- Replace direct script execution with signed deployment pipeline artifacts.
-- Alert on permission drift for files referenced in cron jobs.
-
 ## Detection Indicators
 
 Signs defenders may observe if this attack occurs.
@@ -197,6 +195,13 @@ Signs defenders may observe if this attack occurs.
 - Unexpected file hash changes in scheduled scripts.
 - Outbound connections initiated by cron-managed processes.
 - Root cron process spawning interactive shell behavior.
+
+## Defensive Perspective
+
+- Enforce least privilege and immutable permissions on cron scripts.
+- Keep cron script directories root-owned and non-writable by others.
+- Replace direct script execution with signed deployment pipeline artifacts.
+- Alert on permission drift for files referenced in cron jobs.
 
 ## Practice Lab Idea
 

@@ -1,12 +1,16 @@
 ---
+id: deep-study-linux-privilege-escalation-privileged-groups
 tags: [htb, pentesting, linux, privilege-escalation, containers, docker, lxd]
 aliases: [Privileged Groups]
 date: 2026-03-12
 topic: Privileged Groups
 type: deep-study
 difficulty: intermediate
-status: new
-category: privesc
+owner: vault-agent
+status: draft
+version: 1.1
+last_updated: 2026-03-19
+category: linux-privilege-escalation
 tools: [id, groups, getent, docker, lxc, debugfs]
 ---
 
@@ -17,28 +21,6 @@ tools: [id, groups, getent, docker, lxc, debugfs]
 - [Linux Privilege Escalation](README.md)
 - [Cron Job Abuse](cron-job-abuse.md)
 - [Vulnerable Services](vulnerable-services.md)
-
-## Quick Navigation
-
-- [Enumeration Checklist](#enumeration-checklist)
-- [Attack Methodology](#attack-methodology)
-- [LXC / LXD Privilege Escalation](#lxc--lxd-privilege-escalation)
-- [Docker Group Privilege Escalation](#docker-group-privilege-escalation)
-- [Disk Group Privilege Escalation](#disk-group-privilege-escalation)
-- [Defensive Perspective](#defensive-perspective)
-
-## Enumeration Checklist
-
-```bash
-id
-groups
-cat /etc/group
-getent group docker
-getent group lxd
-ls -l /var/log
-docker ps 2>/dev/null
-lxc list 2>/dev/null
-```
 
 ## Concept Overview
 
@@ -51,6 +33,16 @@ id
 ```
 
 This command reveals all groups associated with the current user.
+
+## Quick Navigation
+
+- [Enumeration Checklist](#enumeration-checklist)
+- [Attack Methodology](#attack-methodology)
+- [LXC / LXD Privilege Escalation](#lxc--lxd-privilege-escalation)
+- [Docker Group Privilege Escalation](#docker-group-privilege-escalation)
+- [Disk Group Privilege Escalation](#disk-group-privilege-escalation)
+- [Detection Indicators](#detection-indicators)
+- [Defensive Perspective](#defensive-perspective)
 
 ## Decision Tree
 
@@ -73,6 +65,19 @@ User in privileged group?
 - `disk` bypasses filesystem-level controls by allowing direct block-device reads.
 - `adm` is usually information-disclosure focused, but often enables follow-on escalation.
 
+## Enumeration Checklist
+
+```bash
+id
+groups
+cat /etc/group
+getent group docker
+getent group lxd
+ls -l /var/log
+docker ps 2>/dev/null
+lxc list 2>/dev/null
+```
+
 ## Attack Methodology
 
 1. Enumerate group memberships (`id`, `groups`).
@@ -80,6 +85,14 @@ User in privileged group?
 3. Select exploit path based on available tooling and host constraints.
 4. Validate privileged data access or root context.
 5. Move to controlled post-exploitation collection.
+
+## Decision Workflow
+
+1. Run `id` and `groups` immediately after shell access.
+2. If `docker` or `lxd` is present, prioritize container-based host access.
+3. If `disk` is present, pivot to raw-device inspection and credential extraction.
+4. If only `adm` is present, mine logs for pivot paths and credential disclosure.
+5. Confirm privilege impact, then transition to post-exploitation actions.
 
 ## LXC / LXD Privilege Escalation
 
@@ -210,8 +223,10 @@ debugfs /dev/sda1
 
 ## Tools
 
-- [[Nmap]]
-- [[FFUF]]
+- `docker`
+- `lxc`
+- `debugfs`
+- `getent`
 
 ## Common Mistakes
 
@@ -338,6 +353,13 @@ Review logs to identify:
 - cron jobs
 - misconfigured services
 
+## Detection Indicators
+
+- Creation of privileged containers
+- Docker containers mounting host root directories
+- Direct access to block devices such as `/dev/sda1`
+- Unusual or large-scale log file access from non-admin users
+
 ## Defensive Perspective
 
 Administrators should:
@@ -352,13 +374,6 @@ Security monitoring should also alert when:
 - containers mount root filesystem
 - users access raw disk devices
 - unusual log access occurs
-
-## Detection Indicators
-
-- Creation of privileged containers
-- Docker containers mounting host root directories
-- Direct access to block devices such as `/dev/sda1`
-- Unusual or large-scale log file access from non-admin users
 
 ## Practice Lab Idea
 
