@@ -51,6 +51,18 @@ can create containers that interact directly with the host filesystem.
 - [Defensive Perspective](#defensive-perspective)
 - [Practice Lab Idea](#practice-lab-idea)
 
+## Threat Context
+
+- Objective: escalate from a low-privileged shell to host-level root.
+- Precondition: attacker controls a user in the `lxd` group.
+- Boundary: container isolation is used as the privilege boundary.
+
+## Environment Snapshot
+
+- Target type: Linux host used for development or CI workloads.
+- Exposure: local shell with constrained sudo/no direct root access.
+- Constraints: limited egress and attacker tooling may be minimal.
+
 ## Internal Mechanics
 
 Linux containers rely on several kernel mechanisms:
@@ -115,6 +127,14 @@ Attacker decision logic:
 6. Mount host root filesystem
 7. Access `/mnt/root`
 
+## Attack Timeline
+
+- T0: obtain low-privilege shell.
+- T1: confirm `lxd` group membership.
+- T2: prepare/import container image.
+- T3: create privileged container and mount host root.
+- T4: access sensitive host files and validate root impact.
+
 ## Attack Chain
 
 1. Compromise low‑privileged user
@@ -152,6 +172,13 @@ ls /mnt/root/root
 ```
 
 This effectively grants full access to the host system.
+
+## Evidence and Artifacts
+
+- Shell history contains `lxc image import`, `lxc init`, and `lxc config device add` commands.
+- LXD event logs show privileged container creation and device attachments.
+- Process telemetry shows `lxc exec` sessions from unexpected users.
+- Host file access traces appear under mounted paths (`/mnt/root/...`).
 
 ## Command Cheat Sheet
 
@@ -199,6 +226,13 @@ Mitigation strategies:
 
 Security teams should treat membership in container management groups
 as equivalent to administrative privileges.
+
+## Recovery and Hardening Path
+
+- Remove non-essential users from `lxd` and `docker` groups immediately.
+- Disable privileged container profiles by default.
+- Restrict device-mount capabilities through policy/profile controls.
+- Add detections for new privileged containers and host-root mounts.
 
 ## Practice Lab Idea
 

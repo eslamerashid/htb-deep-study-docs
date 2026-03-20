@@ -40,6 +40,18 @@ modify the script that cron calls.
 - [Detection Indicators](#detection-indicators)
 - [Defensive Perspective](#defensive-perspective)
 
+## Threat Context
+
+- Objective: leverage writable scheduled script execution for root code execution.
+- Precondition: low-privilege shell and write access to a script called by root cron.
+- Boundary: trust in scheduled task integrity.
+
+## Environment Snapshot
+
+- Target type: Linux server with operational cron automation.
+- Exposure: attacker has local shell without direct sudo privileges.
+- Constraints: payload must survive timing windows and script behavior checks.
+
 ## Decision Tree
 
 Quick decision guide for pentesters when encountering this scenario.
@@ -101,6 +113,14 @@ Condensed attacker workflow used during real engagements.
 4. Append payload to script end.
 5. Catch callback and run `id` for privilege proof.
 
+## Attack Timeline
+
+- T0: foothold established as low-privilege user.
+- T1: writable cron-linked script discovered.
+- T2: root execution context confirmed via process observation.
+- T3: payload appended while preserving normal script behavior.
+- T4: scheduled trigger executes payload and returns root context.
+
 ## Decision Engine
 
 See:
@@ -129,6 +149,13 @@ nc -lnvp 443
 
 The script keeps original tar behavior and additionally executes a
 callback as root when cron triggers.
+
+## Evidence and Artifacts
+
+- Script file hash changes shortly before cron execution window.
+- Bash history or file-modification metadata indicates payload append action.
+- Network telemetry shows outbound connection initiated by cron-managed process.
+- Process tree indicates cron spawning shell or reverse-shell command.
 
 ## Command Cheat Sheet
 
@@ -202,6 +229,13 @@ Signs defenders may observe if this attack occurs.
 - Keep cron script directories root-owned and non-writable by others.
 - Replace direct script execution with signed deployment pipeline artifacts.
 - Alert on permission drift for files referenced in cron jobs.
+
+## Recovery and Hardening Path
+
+- Restore script from known-good backup and verify integrity hashes.
+- Rotate potentially exposed credentials and keys on affected host.
+- Enforce immutable permissions and ownership on cron paths.
+- Add continuous integrity monitoring for scheduled scripts.
 
 ## Practice Lab Idea
 

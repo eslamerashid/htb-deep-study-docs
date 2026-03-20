@@ -44,6 +44,18 @@ This command reveals all groups associated with the current user.
 - [Detection Indicators](#detection-indicators)
 - [Defensive Perspective](#defensive-perspective)
 
+## Threat Context
+
+- Objective: escalate privileges by abusing risky Linux group memberships.
+- Precondition: attacker controls a user in `docker`, `lxd`, `disk`, or `adm`.
+- Boundary: group-based capability model intended for operational convenience.
+
+## Environment Snapshot
+
+- Target type: Linux server/workstation in DevOps or shared admin workflows.
+- Exposure: interactive shell with no direct sudo path.
+- Constraints: exploit path depends on available tools and group assignments.
+
 ## Decision Tree
 
 ```text
@@ -93,6 +105,14 @@ lxc list 2>/dev/null
 3. If `disk` is present, pivot to raw-device inspection and credential extraction.
 4. If only `adm` is present, mine logs for pivot paths and credential disclosure.
 5. Confirm privilege impact, then transition to post-exploitation actions.
+
+## Attack Timeline
+
+- T0: low-privilege access acquired.
+- T1: group enumeration reveals privileged memberships.
+- T2: attacker selects highest-impact path (docker/lxd/disk/adm).
+- T3: host resources accessed via container mount or raw-device read.
+- T4: credentials or root-level access confirmed.
 
 ## LXC / LXD Privilege Escalation
 
@@ -193,6 +213,13 @@ Now the attacker can access the host filesystem:
 ```bash
 cd /mnt/root/root
 ```
+
+## Evidence and Artifacts
+
+- Command traces showing group enumeration and container launch activity.
+- Container runtime logs with privileged profile and host mount events.
+- Access patterns to sensitive paths (`/root`, `/etc/shadow`, `/dev/sd*`).
+- Unusual log-access behavior for users newly leveraging `adm` permissions.
 
 ## Command Cheat Sheet
 
@@ -374,6 +401,13 @@ Security monitoring should also alert when:
 - containers mount root filesystem
 - users access raw disk devices
 - unusual log access occurs
+
+## Recovery and Hardening Path
+
+- Remove unnecessary users from privileged groups and enforce least privilege.
+- Add approval workflow for membership changes in high-risk groups.
+- Restrict privileged container operations and host path mounts.
+- Audit historical access and rotate secrets exposed through disk/log abuse.
 
 ## Practice Lab Idea
 

@@ -39,6 +39,18 @@ In this lesson, the example is GNU `screen` version 4.5.0. That release can be a
 - [Detection Indicators](#detection-indicators)
 - [Defensive Perspective](#defensive-perspective)
 
+## Threat Context
+
+- Objective: convert local service weakness into root-level code execution.
+- Precondition: local shell access on host with vulnerable privileged binary.
+- Boundary: privileged service trust and loader behavior.
+
+## Environment Snapshot
+
+- Target type: Linux host with legacy or unpatched utility packages.
+- Exposure: low-privilege shell, limited sudo rights.
+- Constraints: exploit chain may require local compiler and writable temp space.
+
 ## Decision Tree
 
 ```text
@@ -110,6 +122,14 @@ Condensed attacker workflow used during real engagements.
 5. Trigger the vulnerable behavior.
 6. Confirm escalation with `id`.
 
+## Attack Timeline
+
+- T0: attacker obtains local shell.
+- T1: version and privilege context enumeration identifies vulnerable service.
+- T2: exploit artifacts compiled and staged.
+- T3: vulnerable service behavior triggered to hijack loader path.
+- T4: SUID shell executed to verify root escalation.
+
 ## Decision Engine
 
 See:
@@ -154,6 +174,13 @@ What each step does:
 - `screen -D -m -L ld.so.preload` abuses logging to influence `/etc/ld.so.preload`.
 - `screen -ls` triggers the vulnerable code path.
 - `/tmp/rootshell` starts a shell with root effective permissions.
+
+## Evidence and Artifacts
+
+- Temporary exploit files in `/tmp` (`libhax.so`, helper shell sources/binaries).
+- Unexpected creation/modification of `/etc/ld.so.preload`.
+- File ownership and mode changes on attacker-controlled shell binary.
+- Process executions of `screen` and temporary binaries by low-privileged user.
 
 ## Command Cheat Sheet
 
@@ -235,6 +262,13 @@ Signs defenders may observe if this attack occurs.
 - Monitor writes to `/etc/ld.so.preload` because that file is highly sensitive.
 - Alert on suspicious compilation activity and execution of temporary binaries from `/tmp`.
 - Limit local compiler availability on hardened systems where practical.
+
+## Recovery and Hardening Path
+
+- Remove vulnerable package versions and verify patch levels.
+- Audit and reset permissions/SUID bits on impacted binaries.
+- Review `/etc/ld.so.preload` and remove unauthorized entries.
+- Hunt and remove temporary exploit artifacts and persistence traces.
 
 ## Practice Lab Idea
 
