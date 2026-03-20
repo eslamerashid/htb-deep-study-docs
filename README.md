@@ -5,6 +5,7 @@ clean, searchable, and easy to navigate.
 
 ## Categories
 
+- [Containers](containers/README.md)
 - [Linux Privilege Escalation](linux-privilege-escalation/README.md)
 
 ## Naming Convention
