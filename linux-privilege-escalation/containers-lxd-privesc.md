@@ -43,6 +43,7 @@ can create containers that interact directly with the host filesystem.
 - [Enumeration Checklist](#enumeration-checklist)
 - [Attack Methodology](#attack-methodology)
 - [Decision Workflow](#decision-workflow)
+- [Decision Tree](#decision-tree)
 - [Attack Chain](#attack-chain)
 - [Practical Example](#practical-example)
 - [Command Cheat Sheet](#command-cheat-sheet)
@@ -126,6 +127,23 @@ Attacker decision logic:
 5. Create privileged container
 6. Mount host root filesystem
 7. Access `/mnt/root`
+
+### Decision Tree
+
+```text
+Start
+ └─> Run `id`
+      ├─ In `lxd` group?
+      │   ├─ No  -> Continue other privilege-escalation paths
+      │   └─ Yes -> Is `lxc` binary available?
+      │            ├─ No  -> Try package/alternative container tooling checks
+      │            └─ Yes -> Any local image available?
+      │                     ├─ Yes -> Create privileged container
+      │                     └─ No  -> Import image, then create privileged container
+      │
+      └─> Mount host root (`/`) into container
+            └─> Access `/mnt/root` and validate host-root impact
+```
 
 ## Attack Timeline
 

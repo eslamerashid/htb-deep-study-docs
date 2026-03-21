@@ -1,21 +1,16 @@
 # Deep Study
 
-GitBook-ready deep-study content organized by category for fast learning and
-clean navigation.
+This section is organized by topic domains so GitHub and GitBook stay
+clean, searchable, and easy to navigate.
 
 ## Categories
 
 - [Containers](containers/README.md)
 - [Linux Privilege Escalation](linux-privilege-escalation/README.md)
-- [Containers](containers/README.md)
 
-## Navigation
-
-- Structured sidebar is defined in `SUMMARY.md`.
-- Category pages are entry points; topic files hold detailed content.
-
-## Publishing Rules
+## Naming Convention
 
 - Category folders use lowercase kebab-case.
 - Topic files use lowercase kebab-case.
-- Topic pages include YAML frontmatter and one `Related Topics` section.
+- Each topic starts with YAML frontmatter and a single `Related Topics`
+  section near the top.
