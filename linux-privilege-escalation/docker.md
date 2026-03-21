@@ -27,18 +27,6 @@ It packages applications and dependencies into portable runtime units called con
 Because containers share the host kernel, Docker misconfigurations can become high-impact
 privilege-escalation paths in penetration tests.
 
-## Threat Context
-
-- Attacker objective: move from a constrained shell to host-level privileges.
-- Foothold assumption: shell access on host or inside a containerized workload.
-- Boundary targeted: container/runtime isolation and daemon trust model.
-
-## Environment Snapshot
-
-- Typical host: Linux server running Docker workloads.
-- Common weaknesses: user in `docker` group, writable `docker.sock`, overly privileged containers.
-- Constraints: missing tooling, partial egress, non-standard socket paths.
-
 ## Quick Navigation
 
 - [Internal Mechanics](#internal-mechanics)
@@ -52,6 +40,18 @@ privilege-escalation paths in penetration tests.
 - [Detection Indicators](#detection-indicators)
 - [Defensive Perspective](#defensive-perspective)
 - [Practice Lab Idea](#practice-lab-idea)
+
+## Threat Context
+
+- Attacker objective: move from a constrained shell to host-level privileges.
+- Foothold assumption: shell access on host or inside a containerized workload.
+- Boundary targeted: container/runtime isolation and daemon trust model.
+
+## Environment Snapshot
+
+- Typical host: Linux server running Docker workloads.
+- Common weaknesses: user in `docker` group, writable `docker.sock`, overly privileged containers.
+- Constraints: missing tooling, partial egress, non-standard socket paths.
 
 ## Internal Mechanics
 
