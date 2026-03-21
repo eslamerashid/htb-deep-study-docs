@@ -6,6 +6,7 @@ enumeration logic, and practical exploitation workflow.
 ## Topics
 
 - [Containers (LXC/LXD Privilege Escalation)](containers-lxd-privesc.md)
+- [Docker](docker.md)
 - [Cron Job Abuse](cron-job-abuse.md)
 - [Privileged Groups](privileged-groups.md)
 - [Vulnerable Services](vulnerable-services.md)
